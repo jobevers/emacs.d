@@ -18,14 +18,58 @@
 (setq ispell-list-command "list")
 (setq ispell-extra-args '("--sug-mode=ultra"))
 
+;; enable js2-mode instead of the default
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+
 ;;Don't like using tabs. ever.
 ;; (setq-default indent-tabs-mode nil)
 
 ;;http://www.emacswiki.org/emacs/WhiteSpace
 (require 'whitespace)
-(setq whitespace-line-column 100)
+(global-whitespace-mode 0)
 ;; activate minor whitespace mode when in python mode
 (add-hook 'python-mode-hook 'whitespace-mode)
+(add-hook 'python-mode-hook
+	  (lambda ()
+	    (setq whitespace-line-column 100)
+	    (setq indent-tags-mode nil)
+	    (setq whitespace-style 
+		  (quote
+		   (face tabs spaces trailing space-before-tab newline indentation
+		    lines empty space-after-tab space-mark tab-mark newline-mark)))))
+
+;; remove lines from whitespace-style
+;; whitespace-style variable controls which things whitespace-mode cares about
+;;    not sure why this hook works like this, but for html-mode I have to use setq
+(add-hook 'js2-mode-hook 'whitespace-mode)
+(add-hook 'js2-mode-hook
+	  (lambda ()
+	    (setq indent-tabs-mode t)
+	    (setq tab-width 2)
+	    (setq whitespace-style 
+		  (quote
+		   (face tabs spaces trailing space-before-tab newline indentation
+			 empty space-after-tab space-mark tab-mark newline-mark)))))
+
+(add-hook 'css-mode-hook 'whitespace-mode)
+(add-hook 'css-mode-hook
+	  (lambda ()
+	    (setq indent-tabs-mode t)
+	    (setq tab-width 2)
+	    (setq whitespace-style 
+		  (quote
+		   (face tabs spaces trailing space-before-tab newline indentation
+			 empty space-after-tab space-mark tab-mark newline-mark)))))
+
+(add-hook 'html-mode-hook 'whitespace-mode)
+(add-hook 'html-mode-hook
+	  (lambda ()
+	    (setq indent-tabs-mode t)
+	    (setq tab-width 2)
+	    (setq whitespace-style 
+		  (quote
+		   (face tabs spaces trailing space-before-tab newline indentation
+			 empty space-after-tab space-mark tab-mark newline-mark)))))
 
 
 ;; activate python mode for .ipy files
@@ -36,10 +80,19 @@
 (require 'multi-web-mode)
 (setq mweb-default-major-mode 'html-mode)
 (setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
-                  (js-mode "<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>")
+                  (js2-mode "<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>")
                   (css-mode "<style +type=\"text/css\"[^>]*>" "</style>")))
 (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
 (multi-web-global-mode 1)
+
+;; Enable clipboard
+;; http://stackoverflow.com/questions/64360/how-to-copy-text-from-emacs-to-another-application-on-linux
+(setq x-select-enable-clipboard t)
+
+;; https://github.com/yoshiki/yaml-mode
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))
 
 ;; change indentation style: http://www.emacswiki.org/emacs/IndentingC
 (setq c-default-style "linux"
@@ -49,7 +102,10 @@
  '(bubbles-grid-size (quote (30 . 20)))
  '(js-indent-level 2)
  '(package-archives (quote (("gnu" . "http://elpa.gnu.org/packages/")
-                            ("marmalade" . "http://marmalade-repo.org/packages/")))))
+                            ("marmalade" . "http://marmalade-repo.org/packages/"))))
+ '(inhibit-startup-screen t)
+ '(js2-basic-offset 2))
+
 (custom-set-faces)
 
 ;;(require 'pymacs)
