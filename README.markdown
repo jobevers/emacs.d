@@ -1,4 +1,4 @@
-# Emacs for Clojure Starter Kit
+# Emacs for Clojure Starter Kit + Python for Emacs + whatever else I've changed
 
 This repo is a minor extension of [The Emacs Starter Kit, v2](https://github.com/technomancy/emacs-starter-kit/tree/v2). Added functionality:
 
